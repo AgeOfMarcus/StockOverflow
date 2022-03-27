@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block main %}
+
+<h1><img class='logo' src='/static/logo.png'></img>StockOverflow - <span class='txt-green'>Hackabull22</span></h1>
+<hr>
+
+<div class="search-box">
+    <button class="btn-search"><i class="fas fa-search"></i></button>
+    <input type="text" class="input-search" placeholder="Type to Search...">
+  </div>
+
+<p class='description'>
+    This website aims to provide simple yet informative summaries of stocks and cryptocurrencies, using data from Yahoo Finance.<br/>
+
+    Technology: <ol>
+        <li>Backend - <a href='https://python.org'>Python3</a></li>
+        <li>Webserver - <a href='https://flask.palletsprojects.com/en/2.0.x/'>Flask</a></li>
+        <li>Database - <a href='https://www.cockroachlabs.com/'>CockroachDB</a></li>
+        <li>Finance API - <a href='https://pypi.org/project/yfinance/'>yfinance</a> - powered by <a href='https://finance.yahoo.com'>Yahoo Finance</a></li>
+    </ol>
+</p>
+
+<div class='scroll-wrapper' id="flavoursContainer">
+    <div class='card'>
+        <h2 class='card-title'>AAPL</h2>
+        <img class='card-img' src='https://logo.clearbit.com/apple.com'></img>
+        <br/>
+        <a href='/AAPL' class='card-cont'>Learn more</a>
+    </div>
+    {% for ticker in trending %}
+    <div class='card'>
+        <h2 class='card-title'>{{ ticker.name.upper() }}</h2>
+        <img class='card-img' src='{{ logos.get(ticker.name.upper(), ticker.url) }}'></img>
+        <br/>
+        <a href='/{{ ticker.name }}' class='card-cont'>Learn more</a>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+
+const flavoursContainer = document.getElementById('flavoursContainer');
+const flavoursScrollWidth = flavoursContainer.scrollWidth;
+
+window.addEventListener('load', () => {
+  self.setInterval(() => {
+    if (flavoursContainer.scrollLeft !== flavoursScrollWidth) {
+      flavoursContainer.scrollTo(flavoursContainer.scrollLeft + 1, 0);
+    }
+  }, 15);
+});
+  
+//window.scrollTo(0,0);
+  
+</script>
+
+{% endblock %}
