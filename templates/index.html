@@ -21,12 +21,6 @@
 </p>
 
 <div class='scroll-wrapper' id="flavoursContainer">
-    <div class='card'>
-        <h2 class='card-title'>AAPL</h2>
-        <img class='card-img' src='https://logo.clearbit.com/apple.com'></img>
-        <br/>
-        <a href='/AAPL' class='card-cont'>Learn more</a>
-    </div>
     {% for ticker in trending %}
     <div class='card'>
         <h2 class='card-title'>{{ ticker.name.upper() }}</h2>
@@ -48,6 +42,16 @@ window.addEventListener('load', () => {
       flavoursContainer.scrollTo(flavoursContainer.scrollLeft + 1, 0);
     }
   }, 15);
+});
+
+document.querySelector('input.input-search').addEventListener("keyup", function(event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Go
+    window.location.href = '/' + event.target.value;
+  }
 });
   
 //window.scrollTo(0,0);

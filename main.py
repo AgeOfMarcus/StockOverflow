@@ -10,6 +10,7 @@ from pathlib import Path
 import sqlalchemy.orm
 import requests
 import yfinance
+import _thread
 import time
 import os
 
@@ -199,7 +200,14 @@ def app_view(name: str):
         news = []
     def callback(session):
         if (info := session.query(Info).filter_by(name=name).first()):
-            pass
+            # check how old data is
+            tsnow = time.time() * 10000000
+            fivemin = 50000000 * 60
+            if (tsnow - info.ts) >= fivemin:
+                # update
+                infod = {k.lower(): v for k, v in get_info(name).items()}
+                infod.update({'ts': time.time() * 10000000, 'name': name})
+                session.query(Info).filter_by(name=name).update(infod)
         else:
             infod = get_info(name)
             infod.update({'ts': time.time(), 'name': name})
@@ -213,5 +221,6 @@ def app_view(name: str):
     return run_transaction(sessionmaker, callback)
 
 if __name__ == '__main__':
+    _thread.start_new_thread(update_trending, ())
     app.run(host='0.0.0.0', port=8080)
 

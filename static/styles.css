@@ -59,7 +59,7 @@ div.card > .card-cont {
   transition: all .5s ease-in-out;
   background-color: #CFC493;
   padding-right: 40px;
-  color:#CFC493;
+  color:#fff;
 }
 .input-search::placeholder{
   color:#CFC493;
